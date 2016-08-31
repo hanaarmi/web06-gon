@@ -25,11 +25,13 @@ public class MemberListServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			
-			// Removed at page 393 due to change from AppInitServlet to 
-			// ServletContextListener
-			//Connection conn = (Connection)sc.getAttribute("conn");
-			//MemberDao memberDao = new MemberDao();
-			
+			/*
+			Removed at page 393 due to change from AppInitServlet to
+			ServletContextListener
+			Connection conn = (Connection)sc.getAttribute("conn");
+			MemberDao memberDao = new MemberDao();
+			*/
+
 			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
 			request.setAttribute("members", memberDao.selectList());
 
