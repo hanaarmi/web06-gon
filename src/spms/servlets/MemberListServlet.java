@@ -35,16 +35,27 @@ public class MemberListServlet extends HttpServlet {
 			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
 			request.setAttribute("members", memberDao.selectList());
 
+			request.setAttribute("viewUrl", "/member/MemberList.jsp");
+
+			/*
+			Because adopting front controller before this,
+			removing this part.
 			response.setContentType("text/html; charset=UTF-8");
 			RequestDispatcher rd = request.getRequestDispatcher(
 				"/member/MemberList.jsp");
 			rd.include(request, response);
+			*/
 			
 		} catch (Exception e) {
+			throw new ServletException(e);
+			/*
+			Because adopting front controller before this,
+			removing this part.
 			e.printStackTrace();
 			request.setAttribute("error", e);
 			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
 			rd.forward(request, response);
+			*/
 		}
 	}
 }

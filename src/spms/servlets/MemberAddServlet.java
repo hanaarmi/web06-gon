@@ -20,9 +20,15 @@ public class MemberAddServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
+
+		/*
+		Because of adopting front controller, this part deleted.
 		RequestDispatcher rd = request.getRequestDispatcher("/member/MemberForm.jsp");
 		rd.forward(request, response);
-		
+		*/
+
+		request.setAttribute("viewUrl", "/member/MemberForm.jsp");
+
 		/* convert to comment at page 289
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
@@ -49,10 +55,14 @@ public class MemberAddServlet extends HttpServlet {
 			ServletContext sc = this.getServletContext();
 
 			MemberDao dao = (MemberDao)sc.getAttribute("memberDao");
+			/*
 			dao.insert(new Member().setName(request.getParameter("name"))
 					.setEmail(request.getParameter("email"))
 					.setPassword(request.getParameter("password")));
-			
+			*/
+			Member member = (Member)request.getAttribute("member");
+			dao.insert(member);
+
 			/* after page 384, commented (converted to DAO)
 			stmt = conn.prepareStatement(
 				"insert into MEMBERS(EMAIL, PWD, MNAME, CRE_DATE, MOD_DATE)"
@@ -64,7 +74,8 @@ public class MemberAddServlet extends HttpServlet {
 			stmt.executeUpdate();
 			*/
 			
-			response.sendRedirect("list");
+			//response.sendRedirect("list");
+			request.setAttribute("viewUrl", "redirect:list.do");
 			
 			/* Test for redirect
 			response.setContentType("text/html; charset=UTF-8");
@@ -79,12 +90,12 @@ public class MemberAddServlet extends HttpServlet {
 			
 			//response.addHeader("Refresh", "1;url=list");
 		} catch (Exception e) {
-			//throw new ServletException(e);
+			throw new ServletException(e);
+			/*
 			request.setAttribute("error", e);
 			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
 			rd.forward(request, response);
-		} finally {
-			try {if (stmt != null) stmt.close();} catch(Exception e) {}
+			*/
 		}
 	}
 }

@@ -14,13 +14,13 @@
 <body>
 <jsp:include page="/Header.jsp" />
 <h1>List of members</h1>
-<p><a href='add'>New member</a></p>
+<p><a href='add.do'>New member</a></p>
 <c:forEach var="member" items="${members}">
 ${member.no},
-<a href='update?no=${member.no}'>${member.name}</a>,
+<a href='update.do?no=${member.no}'>${member.name}</a>,
 ${member.email},
 ${member.createdDate}
-<a href='delete?no=${member.no}'>[Del]</a><br>
+<a href='delete.do?no=${member.no}'>[Del]</a><br>
 </c:forEach>
 <jsp:include page="/Tail.jsp" />
 </body>
