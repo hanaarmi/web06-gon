@@ -1,9 +1,6 @@
 package spms.servlets;
 
 import java.io.IOException;
-//import java.sql.Connection;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,38 +21,12 @@ public class MemberListServlet extends HttpServlet {
 		
 		try {
 			ServletContext sc = this.getServletContext();
-			
-			/*
-			Removed at page 393 due to change from AppInitServlet to
-			ServletContextListener
-			Connection conn = (Connection)sc.getAttribute("conn");
-			MemberDao memberDao = new MemberDao();
-			*/
-
 			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
+
 			request.setAttribute("members", memberDao.selectList());
-
 			request.setAttribute("viewUrl", "/member/MemberList.jsp");
-
-			/*
-			Because adopting front controller before this,
-			removing this part.
-			response.setContentType("text/html; charset=UTF-8");
-			RequestDispatcher rd = request.getRequestDispatcher(
-				"/member/MemberList.jsp");
-			rd.include(request, response);
-			*/
-			
 		} catch (Exception e) {
 			throw new ServletException(e);
-			/*
-			Because adopting front controller before this,
-			removing this part.
-			e.printStackTrace();
-			request.setAttribute("error", e);
-			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-			rd.forward(request, response);
-			*/
 		}
 	}
 }
