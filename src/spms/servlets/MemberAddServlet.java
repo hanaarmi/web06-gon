@@ -56,6 +56,8 @@ public class MemberAddServlet extends HttpServlet {
 
 			MemberDao dao = (MemberDao)sc.getAttribute("memberDao");
 			/*
+			Because of adopting front controller, member is inputted in front controller,
+			so don't need to make member here.
 			dao.insert(new Member().setName(request.getParameter("name"))
 					.setEmail(request.getParameter("email"))
 					.setPassword(request.getParameter("password")));

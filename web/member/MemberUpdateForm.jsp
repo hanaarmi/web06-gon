@@ -9,7 +9,7 @@
 </head>
 <body>
 <h1>Information of member</h1>
-<form action='update' method='post'>
+<form action='update.do' method='post'>
 Number: <input type='text' name='no' value='${member.no}' readonly><br>
 Name: <input type='text' name='name' value='${member.name}'><br>
 EMail: <input type='text' name='email' value='${member.email}'><br>

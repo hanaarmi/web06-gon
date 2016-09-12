@@ -23,8 +23,8 @@ public class MemberUpdateServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		//Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
+		//Statement stmt = null;
+		//ResultSet rs = null;
 		
 		try {
 			ServletContext sc = this.getServletContext();
@@ -52,11 +52,15 @@ public class MemberUpdateServlet extends HttpServlet {
 				.setName(rs.getString("mname"))
 				.setCreatedDate(rs.getDate("cre_date"));	
 			*/
-			
+
+			/* Adopting front controller
 			request.setAttribute("member", member);
 			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberUpdateForm.jsp");
 			rd.forward(request, response);
-			
+			*/
+			request.setAttribute("member", member);
+			request.setAttribute("viewUrl", "/member/MemberUpdateForm.jsp");
+
 			/* Commented at page 337
 			response.setContentType("text/html; charset=UTF-8");
 			PrintWriter out = response.getWriter();
@@ -79,13 +83,15 @@ public class MemberUpdateServlet extends HttpServlet {
 			out.println("</body></html>");
 			*/
 		} catch (Exception e) {
-			//throw new ServletException(e);
+			throw new ServletException(e);
+			/*
 			request.setAttribute("error", e);
 			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
 			rd.forward(request, response);
+			*/
 		} finally {
-			try {if (rs != null) rs.close();} catch (Exception e) {}
-			try {if (stmt != null) stmt.close();} catch (Exception e) {}
+			//try {if (rs != null) rs.close();} catch (Exception e) {}
+			//try {if (stmt != null) stmt.close();} catch (Exception e) {}
 		}
 	}
 	
@@ -106,11 +112,13 @@ public class MemberUpdateServlet extends HttpServlet {
 			*/
 			
 			MemberDao dao = (MemberDao)sc.getAttribute("memberDao");
-			
+
+			/* Adopting front controller
 			Member member = new Member().setName(request.getParameter("name"))
 				.setEmail(request.getParameter("email"))
 				.setNo(Integer.parseInt(request.getParameter("no")));
-
+			*/
+			Member member = (Member)request.getAttribute("member");
 			dao.update(member);
 			
 			/* Remove the code at page 384 excercise
@@ -123,14 +131,15 @@ public class MemberUpdateServlet extends HttpServlet {
 			stmt.executeUpdate();
 			*/
 			
-			response.sendRedirect("list");
+			//response.sendRedirect("list");
+			request.setAttribute("viewUrl", "redirect:list.do");
 		} catch (Exception e) {
-			//throw new ServletException(e);
+			throw new ServletException(e);
+			/*
 			request.setAttribute("error", e);
 			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
 			rd.forward(request, response);
-		} finally {
-			try {if (stmt != null) { stmt.close(); }} catch(Exception e) {}
+			*/
 		}
 		
 	}

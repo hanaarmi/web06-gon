@@ -9,7 +9,7 @@
 <body>
 <jsp:include page="/Header.jsp" />
 <h1>Register Member</h1>
-<form action='add' method='post'>
+<form action='add.do' method='post'>
 Name: <input type='text' name='name'><br>
 Email: <input type='text' name='email'><br>
 Password: <input type='password' name='password'><br>
