@@ -15,8 +15,8 @@ Name: <input type='text' name='name' value='${member.name}'><br>
 EMail: <input type='text' name='email' value='${member.email}'><br>
 Register Date: ${member.createdDate}<br>
 <input type='submit' value='Save'>
-<input type='button' value='Delete' onclick='location.href="delete?no=${member.no}"'>
-<input type='button' value='Cancel' onclick='location.href="list"'>
+<input type='button' value='Delete' onclick='location.href="delete.do?no=${member.no}"'>
+<input type='button' value='Cancel' onclick='location.href="list.do"'>
 </form>
 </body>
 </html>
