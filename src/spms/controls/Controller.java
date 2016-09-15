@@ -1,7 +1,7 @@
 package spms.controls;
 
-/**
- * Created by hanaarmi on 2016. 9. 15..
- */
+import java.util.Map;
+
 public interface Controller {
+    String execute(Map<String, Object> model) throws Exception;
 }

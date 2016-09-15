@@ -1,14 +1,18 @@
 package spms.servlets;
 
+import spms.controls.Controller;
+import spms.controls.MemberListController;
 import spms.vo.Member;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 
 @WebServlet("*.do")
 public class DispatcherServlet extends HttpServlet
@@ -19,10 +23,17 @@ public class DispatcherServlet extends HttpServlet
         response.setContentType("text/html; charset=UTF-8");
         String servletPath = request.getServletPath();
         try {
+            ServletContext sc = this.getServletContext();
+
+            HashMap<String,Object> model = new HashMap<String,Object>();
+            model.put("memberDao", sc.getAttribute("memberDao"));
+
             String pageControllerPath = null;
+            Controller pageController = null;
 
             if ("/member/list.do".equals(servletPath)) {
-                pageControllerPath = "/member/list";
+                //pageControllerPath = "/member/list";
+                pageController = new MemberListController();
             } else if ("/member/add.do".equals(servletPath)) {
                 pageControllerPath = "/member/add";
                 if (request.getParameter("email") != null) {
@@ -47,15 +58,17 @@ public class DispatcherServlet extends HttpServlet
                 pageControllerPath = "/auth/logout";
             }
 
-            RequestDispatcher rd = request.getRequestDispatcher(pageControllerPath);
-            rd.include(request, response);
+            String viewUrl = pageController.execute(model);
 
-            String viewUrl = (String)request.getAttribute("viewUrl");
+            for (String key : model.keySet()) {
+                request.setAttribute(key, model.get(key));
+            }
+
             if (viewUrl.startsWith("redirect:")) {
                 response.sendRedirect(viewUrl.substring(9));
                 return;
             } else {
-                rd = request.getRequestDispatcher(viewUrl);
+                RequestDispatcher rd  = request.getRequestDispatcher(viewUrl);
                 rd.include(request, response);
             }
         } catch (Exception e) {
