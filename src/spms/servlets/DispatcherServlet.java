@@ -1,6 +1,7 @@
 package spms.servlets;
 
 import spms.controls.Controller;
+import spms.controls.MemberAddController;
 import spms.controls.MemberListController;
 import spms.vo.Member;
 
@@ -35,12 +36,14 @@ public class DispatcherServlet extends HttpServlet
                 //pageControllerPath = "/member/list";
                 pageController = new MemberListController();
             } else if ("/member/add.do".equals(servletPath)) {
-                pageControllerPath = "/member/add";
+                //pageControllerPath = "/member/add";
+                pageController = new MemberAddController();
                 if (request.getParameter("email") != null) {
-                    request.setAttribute("member", new Member()
+                    Member member = new Member()
                             .setEmail(request.getParameter("email"))
                             .setPassword(request.getParameter("password"))
-                            .setName(request.getParameter("name")));
+                            .setName(request.getParameter("name"));
+                    model.put("member", member);
                 }
             } else if ("/member/update.do".equals(servletPath)) {
                 pageControllerPath = "/member/update";
