@@ -3,6 +3,7 @@ package spms.servlets;
 import spms.controls.Controller;
 import spms.controls.MemberAddController;
 import spms.controls.MemberListController;
+import spms.controls.MemberUpdateController;
 import spms.vo.Member;
 
 import javax.servlet.RequestDispatcher;
@@ -46,12 +47,16 @@ public class DispatcherServlet extends HttpServlet
                     model.put("member", member);
                 }
             } else if ("/member/update.do".equals(servletPath)) {
-                pageControllerPath = "/member/update";
+                //pageControllerPath = "/member/update";
+                pageController = new MemberUpdateController();
                 if (request.getParameter("email") != null) {
-                    request.setAttribute("member", new Member()
+                    Member member = new Member()
                             .setNo(Integer.parseInt(request.getParameter("no")))
                             .setEmail(request.getParameter("email"))
-                            .setName(request.getParameter("name")));
+                            .setName(request.getParameter("name"));
+                    model.put("member", member);
+                } else {
+                    model.put("no", Integer.parseInt(request.getParameter("no")));
                 }
             } else if ("/member/delete.do".equals(servletPath)) {
                 pageControllerPath = "/member/delete";
