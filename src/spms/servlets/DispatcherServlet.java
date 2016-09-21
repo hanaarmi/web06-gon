@@ -61,7 +61,11 @@ public class DispatcherServlet extends HttpServlet
                 model.put("no", Integer.parseInt(request.getParameter("no")));
                 pageController.execute(model);
             } else if ("/auth/login.do".equals(servletPath)) {
-                pageControllerPath = "/auth/login";
+                //pageControllerPath = "/auth/login";
+                pageController = new LogInController();
+                if (request.getParameter("email") != null) {
+
+                }
             } else if ("/auth/logout.do".equals(servletPath)) {
                 pageControllerPath = "/auth/logout";
             }
