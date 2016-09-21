@@ -1,9 +1,6 @@
 package spms.servlets;
 
-import spms.controls.Controller;
-import spms.controls.MemberAddController;
-import spms.controls.MemberListController;
-import spms.controls.MemberUpdateController;
+import spms.controls.*;
 import spms.vo.Member;
 
 import javax.servlet.RequestDispatcher;
@@ -59,7 +56,10 @@ public class DispatcherServlet extends HttpServlet
                     model.put("no", Integer.parseInt(request.getParameter("no")));
                 }
             } else if ("/member/delete.do".equals(servletPath)) {
-                pageControllerPath = "/member/delete";
+                //pageControllerPath = "/member/delete";
+                pageController = new MemberDeleteController();
+                model.put("no", Integer.parseInt(request.getParameter("no")));
+                pageController.execute(model);
             } else if ("/auth/login.do".equals(servletPath)) {
                 pageControllerPath = "/auth/login";
             } else if ("/auth/logout.do".equals(servletPath)) {
