@@ -59,15 +59,18 @@ public class DispatcherServlet extends HttpServlet
                 //pageControllerPath = "/member/delete";
                 pageController = new MemberDeleteController();
                 model.put("no", Integer.parseInt(request.getParameter("no")));
-                pageController.execute(model);
             } else if ("/auth/login.do".equals(servletPath)) {
                 //pageControllerPath = "/auth/login";
                 pageController = new LogInController();
                 if (request.getParameter("email") != null) {
-
+                    model.put("email", request.getParameter("email"));
+                    model.put("password", request.getParameter("password"));
+                    model.put("session", request.getSession());
                 }
             } else if ("/auth/logout.do".equals(servletPath)) {
-                pageControllerPath = "/auth/logout";
+                //pageControllerPath = "/auth/logout";
+                pageController = new LogOutController();
+                model.put("session", request.getSession());
             }
 
             String viewUrl = pageController.execute(model);

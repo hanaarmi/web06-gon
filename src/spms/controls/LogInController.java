@@ -1,7 +1,9 @@
 package spms.controls;
 
 import spms.dao.MemberDao;
+import spms.vo.Member;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 public class LogInController implements Controller {
@@ -11,8 +13,14 @@ public class LogInController implements Controller {
             return "/auth/LogInForm.jsp";
         } else {
             MemberDao memberDao = (MemberDao)model.get("memberDao");
-            memberDao.exist()
-            return "redirect:list.do";
+            Member member = memberDao.exist((String)model.get("email"), (String)model.get("password"));
+            if (member != null) {
+                HttpSession session = (HttpSession)model.get("session");
+                session.setAttribute("member", member);
+                return "redirect:../member/list.do";
+            } else {
+                return "/auth/LogInFail.jsp";
+            }
         }
     }
 }
