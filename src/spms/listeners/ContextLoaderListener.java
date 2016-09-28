@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 
 //import org.apache.commons.dbcp.BasicDataSource;
 
+import spms.controls.*;
 import spms.dao.MemberDao;
 
 @WebListener
@@ -57,7 +58,13 @@ public class ContextLoaderListener implements ServletContextListener {
 			//dao.setDBConnectionPool(connPool);
 			dao.setDataSource(ds);
 			
-			sc.setAttribute("memberDao", dao);
+			//sc.setAttribute("memberDao", dao);
+			sc.setAttribute("/auth/login.do", new LogInController().setMemberDao(dao));
+            sc.setAttribute("/auth/logout.do", new LogOutController());
+            sc.setAttribute("/member/list.do", new MemberListController().setMemberDao(dao));
+            sc.setAttribute("/member/add.do", new MemberAddController().setMemberDao(dao));
+            sc.setAttribute("/member/delete.do", new MemberDeleteController().setMemberDao(dao));
+            sc.setAttribute("/member/update.do", new MemberUpdateController().setMemberDao(dao));
 			
 		} catch (Throwable e) {
 			e.printStackTrace();

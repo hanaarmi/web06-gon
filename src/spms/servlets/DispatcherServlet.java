@@ -19,23 +19,19 @@ public class DispatcherServlet extends HttpServlet
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         response.setContentType("text/html; charset=UTF-8");
         String servletPath = request.getServletPath();
         try {
             ServletContext sc = this.getServletContext();
 
-            HashMap<String,Object> model = new HashMap<String,Object>();
-            model.put("memberDao", sc.getAttribute("memberDao"));
+            HashMap<String,Object> model = new HashMap<>();
 
-            String pageControllerPath = null;
-            Controller pageController = null;
+            model.put("session", request.getSession());
 
-            if ("/member/list.do".equals(servletPath)) {
-                //pageControllerPath = "/member/list";
-                pageController = new MemberListController();
-            } else if ("/member/add.do".equals(servletPath)) {
-                //pageControllerPath = "/member/add";
-                pageController = new MemberAddController();
+            Controller pageController = (Controller)sc.getAttribute(servletPath);
+
+            if ("/member/add.do".equals(servletPath)) {
                 if (request.getParameter("email") != null) {
                     Member member = new Member()
                             .setEmail(request.getParameter("email"))
@@ -44,8 +40,6 @@ public class DispatcherServlet extends HttpServlet
                     model.put("member", member);
                 }
             } else if ("/member/update.do".equals(servletPath)) {
-                //pageControllerPath = "/member/update";
-                pageController = new MemberUpdateController();
                 if (request.getParameter("email") != null) {
                     Member member = new Member()
                             .setNo(Integer.parseInt(request.getParameter("no")))
@@ -56,21 +50,12 @@ public class DispatcherServlet extends HttpServlet
                     model.put("no", Integer.parseInt(request.getParameter("no")));
                 }
             } else if ("/member/delete.do".equals(servletPath)) {
-                //pageControllerPath = "/member/delete";
-                pageController = new MemberDeleteController();
                 model.put("no", Integer.parseInt(request.getParameter("no")));
             } else if ("/auth/login.do".equals(servletPath)) {
-                //pageControllerPath = "/auth/login";
-                pageController = new LogInController();
                 if (request.getParameter("email") != null) {
                     model.put("email", request.getParameter("email"));
                     model.put("password", request.getParameter("password"));
-                    model.put("session", request.getSession());
                 }
-            } else if ("/auth/logout.do".equals(servletPath)) {
-                //pageControllerPath = "/auth/logout";
-                pageController = new LogOutController();
-                model.put("session", request.getSession());
             }
 
             String viewUrl = pageController.execute(model);
@@ -81,7 +66,6 @@ public class DispatcherServlet extends HttpServlet
 
             if (viewUrl.startsWith("redirect:")) {
                 response.sendRedirect(viewUrl.substring(9));
-                return;
             } else {
                 RequestDispatcher rd  = request.getRequestDispatcher(viewUrl);
                 rd.include(request, response);
