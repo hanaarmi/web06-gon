@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 
 import spms.controls.*;
 import spms.dao.MemberDao;
+import spms.dao.MySqlMemberDao;
 
 @WebListener
 public class ContextLoaderListener implements ServletContextListener {
@@ -53,9 +54,10 @@ public class ContextLoaderListener implements ServletContextListener {
 			DataSource ds = (DataSource)initialContext.lookup(
 				"java:comp/env/jdbc/studydb");
 			
-			MemberDao dao = new MemberDao();
+			//MemberDao dao = new MemberDao();
 			//dao.setConnection(conn);
 			//dao.setDBConnectionPool(connPool);
+			MySqlMemberDao dao = new MySqlMemberDao();
 			dao.setDataSource(ds);
 			
 			//sc.setAttribute("memberDao", dao);

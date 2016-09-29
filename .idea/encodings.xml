@@ -2,7 +2,7 @@
 <project version="4">
   <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$/src/spms" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/spms/dao/MemberDao.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/spms/dao/MySqlMemberDao.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/spms/filters/CharacterEncodingFilter.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/spms/servlets" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/spms/servlets/MemberAddServlet.java" charset="UTF-8" />
