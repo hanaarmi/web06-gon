@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 
 //import org.apache.commons.dbcp.BasicDataSource;
 
+import spms.context.ApplicationContext;
 import spms.controls.*;
 import spms.dao.MemberDao;
 import spms.dao.MySqlMemberDao;
@@ -21,6 +22,12 @@ public class ContextLoaderListener implements ServletContextListener {
 	//Connection conn;
 	//DBConnectionPool connPool;
 	//BasicDataSource ds;
+
+	static ApplicationContext applicationContext;
+
+    public static ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
 
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
@@ -49,25 +56,38 @@ public class ContextLoaderListener implements ServletContextListener {
 			ds.setUsername(sc.getInitParameter("username"));
 			ds.setPassword(sc.getInitParameter("password"));
 			*/
-			
+			/*
 			InitialContext initialContext = new InitialContext();
 			DataSource ds = (DataSource)initialContext.lookup(
 				"java:comp/env/jdbc/studydb");
-			
-			//MemberDao dao = new MemberDao();
-			//dao.setConnection(conn);
-			//dao.setDBConnectionPool(connPool);
+			*/
+
+			/*
+			MemberDao dao = new MemberDao();
+			dao.setConnection(conn);
+			dao.setDBConnectionPool(connPool);
+			*/
+			/*
 			MySqlMemberDao dao = new MySqlMemberDao();
 			dao.setDataSource(ds);
+			*/
 			
 			//sc.setAttribute("memberDao", dao);
+            /*
 			sc.setAttribute("/auth/login.do", new LogInController().setMemberDao(dao));
             sc.setAttribute("/auth/logout.do", new LogOutController());
             sc.setAttribute("/member/list.do", new MemberListController().setMemberDao(dao));
             sc.setAttribute("/member/add.do", new MemberAddController().setMemberDao(dao));
             sc.setAttribute("/member/delete.do", new MemberDeleteController().setMemberDao(dao));
             sc.setAttribute("/member/update.do", new MemberUpdateController().setMemberDao(dao));
-			
+            */
+
+            String propertiesPath = sc.getRealPath(
+                    sc.getInitParameter("contextConfigLocation")
+            );
+            applicationContext = new ApplicationContext(propertiesPath);
+
+
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}

@@ -2,8 +2,11 @@ package spms.servlets;
 
 import spms.bind.DataBinding;
 import spms.bind.ServletRequestDataBinder;
+import spms.context.ApplicationContext;
 import spms.controls.*;
+import spms.listeners.ContextLoaderListener;
 
+import javax.naming.Context;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -24,12 +27,18 @@ public class DispatcherServlet extends HttpServlet
         response.setContentType("text/html; charset=UTF-8");
         String servletPath = request.getServletPath();
         try {
-            ServletContext sc = this.getServletContext();
+            //ServletContext sc = this.getServletContext();
+            ApplicationContext ctx = ContextLoaderListener.getApplicationContext();
 
             HashMap<String,Object> model = new HashMap<>();
             model.put("session", request.getSession());
 
-            Controller pageController = (Controller)sc.getAttribute(servletPath);
+            //Controller pageController = (Controller)sc.getAttribute(servletPath);
+            Controller pageController = (Controller)ctx.getBean(servletPath);
+            if (pageController == null) {
+                throw new Exception("Can't find requested service");
+            }
+
 
             if (pageController instanceof DataBinding) {
                 prepareRequestData(request, model, (DataBinding)pageController);
@@ -53,6 +62,7 @@ public class DispatcherServlet extends HttpServlet
             RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
             rd.forward(request, response);
         }
+        
     }
 
     private void prepareRequestData(HttpServletRequest request, HashMap<String, Object> model,
