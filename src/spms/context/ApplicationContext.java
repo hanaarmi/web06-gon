@@ -6,6 +6,10 @@ import java.io.FileReader;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
 import java.util.Properties;
+import java.util.Set;
+
+import org.reflections.Reflections;
+import spms.annotation.Component;
 
 public class ApplicationContext {
     Hashtable<String, Object> objTable = new Hashtable<String, Object>();
@@ -17,6 +21,7 @@ public class ApplicationContext {
         props.load(new FileReader(propertiesPath));
 
         prepareObjects(props);
+        prepareAnnotationObjects();
         injectDependency();
     }
 
@@ -33,6 +38,17 @@ public class ApplicationContext {
             } else {
                 objTable.put(key, Class.forName(value).newInstance());
             }
+        }
+    }
+
+    private void prepareAnnotationObjects() throws Exception {
+        Reflections reflector = new Reflections();
+
+        Set<Class<?>> list =  reflector.getTypesAnnotatedWith(Component.class);
+        String key = null;
+        for (Class<?> clazz : list) {
+            key = clazz.getAnnotation(Component.class).value();
+            objTable.put(key, clazz.newInstance());
         }
     }
 
